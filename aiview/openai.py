@@ -19,7 +19,7 @@ def Translation(userdata):
     temperature=0,
     max_tokens=256
     )
-    print(response)
+    #print(response)
     return response
 
 
@@ -36,7 +36,7 @@ def ChatBase(role,userdata):
             {"role": role, "content": userdata}
         ]
     )
-    print(response)
+    #print(response)
     return response
 
 def Test():
@@ -50,11 +50,16 @@ def Test():
             {"role": "user", "content": "Where was it played?"}
         ]
     )
-    print(response)
+    #print(response)
     return response
 
 
 if __name__ == '__main__':
     #这两个参数分别是账号和密码
     #user = meanweichatlogin('7894656','13802653734','zdn');
-    code = Translation('13802653734')
+    code = Translation('who am i i need mony')
+    print(code)
+    code = Test()
+    print(code)
+    #code = Translation('who am i i need mony')
+    #print(code)
