@@ -4,8 +4,24 @@ from django.http import JsonResponse
 import json
 from . import models
 from .form import ApiKkeyForm
-#from . import djopenai
+from . import djopenai
 # Create your views here.
+
+@csrf_exempt 
+def test(request):
+    result= ''
+    if request.method == 'GET':
+        result = {"request":"GET"}
+    else:
+        #print(request)
+        #result = {"request":"GET"}
+        result = json.loads(request.body.decode('utf-8'))
+        print(result)
+        role = result['role']
+        userdata = result['userdata']
+        result = {"userdata":userdata}
+    return JsonResponse(result)
+
 @csrf_exempt 
 def ai_test(request):
     result = ''
@@ -17,7 +33,7 @@ def ai_test(request):
         result = json.loads(request.body.decode('utf-8'))
         role = result['role']
         userdata = result['userdata']
-        #result = djopenai.ChatBase(role,userdata)
+        result = djopenai.ChatBase(role,userdata)
     return JsonResponse(result)
 
 def index(request):
@@ -42,4 +58,4 @@ def changeapikey(request):
     return render(request, 'apikey.html', locals())
 
 def chat(request):
-    return render(request, 'index.html', locals())
+    return render(request, 'chat.html', locals())

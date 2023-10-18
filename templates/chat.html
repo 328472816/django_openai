@@ -7,20 +7,307 @@
 </head>
 <body>
     <div id="app">
-        {{ message }}
+          <div  class="box"> 
+            <div class="chat" ref="chatContent">
+                 <!-- 回复的区域 -->
+                 <div class="left">
+                     <!-- 头像 -->
+                     <div>
+                         <img :src="aiavatar" alt="">
+                     </div>
+                     <!-- 聊天文本 -->
+                     <div class="message">
+                         <p @click="z">start</p>
+                     </div>
+                 </div>
+                 <!-- 用户发信息区域 -->
+                 <div class="right">
+                     <!-- 头像 -->
+                     
+                     <!-- 聊天文本 -->
+                     <div class="message-right">
+                         <p>i am here</p>
+                     </div>
+                     <div>
+                         <img :src="manavatar" alt="">
+                     </div>
+                 </div>
+                
+                 
+            </div>
+            <!-- 模糊查询 -->
+            
+            <!-- 输入框位置 -->
+            <div class="txt">
+                 <div class="suggest" v-show="show">
+                   <li v-for="(k,index) in filterFruitList" :key="index" @click="getTxt(k,index)">
+                    <span v-html="k"></span>
+                   </li>
+                </div>
+                <input type="text" v-model="txt" @input="change">
+                <button type="info" @click="send">发送</button>
+               
+            </div>
+          </div>
     </div>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
     <script>
       const { createApp, ref } = Vue
       createApp({
-        setup() {
-          const message = ref('Hello vue!')
-          return {
-            message
-          }
-        }
+            data(){
+                  return{
+                      aiavatar:"https://img2.baidu.com/it/u=2029241369,2859395823&fm=253&fmt=auto&app=138&f=JPEG?w=749&h=500",
+                      manavatar:"https://img0.baidu.com/it/u=3008179115,2894375428&fm=253&fmt=auto&app=138&f=PNG?w=463&h=550",
+                      json:{"name":123},
+                      value: '',
+                      txt:'',
+                      show:false,
+                      num:-1
+                  }
+              },
+              mounted(){
+                  
+              },
+              methods:{
+                  aks(){
+                      let that = this;
+                        $.ajax({
+                                    type: "POST",
+                                    url: "/aitest",
+                                    contentType: "application/json", //必须有
+                                    dataType: "json", //表示返回值类型，不必须
+                                    data: JSON.stringify({ 'role': 'user', 'userdata': this.txt }),  //相当于 //data: "{'str1':'foovalue', 'str2':'barvalue'}",
+                                    success: function (jsonResult) {
+                                        console.log(jsonResult);
+                                        that.reply(jsonResult);
+                                    }
+                                });
+                  },
+                  send(){
+                      if(this.txt==''){
+                          //this.$toast.fail('输入内容')
+                          console.log('输入为空');
+                          return
+                      }
+                      let chat=document.querySelector('.chat')
+                      let right=document.createElement('div')
+                      right.classList.add('right')
+                      right.innerHTML=`   
+                       <div class="message-right">
+                           <p>${this.txt}</p>
+                       </div>
+                       <div>
+                           <img src="https://img0.baidu.com/it/u=3008179115,2894375428&fm=253&fmt=auto&app=138&f=PNG?w=463&h=550" alt="">
+                       </div>`
+                       chat.appendChild(right)
+                       this.aks()
+           
+                      //this.reply()
+                  },
+           
+                  reply(str){
+                      // let str='3434234'
+                      let chat=document.querySelector('.chat')
+                      let left=document.createElement('div')
+                      left.classList.add('left')
+                      
+                      left.innerHTML=`   
+                        <div>
+                           <img src="https://img2.baidu.com/it/u=2029241369,2859395823&fm=253&fmt=auto&app=138&f=JPEG?w=749&h=500" alt="">
+                       </div>
+                       <div class="message">
+                           <p>${str}
+                           </p>
+                           
+                       </div>
+                     `
+                       chat.appendChild(left)
+                       this.num=-1
+                       this.txt=''
+           
+                       this.$nextTick().then(() => {
+                       let i=document.querySelectorAll('i')
+                       console.log(this.txt);
+                       i.forEach((key,index)=>{
+                          
+                          key.addEventListener('click',this.getTxtFunction)
+                          this.$refs.chatContent.scrollTop = this.$refs.chatContent.scrollHeight;
+                       })
+                   
+                  })
+                  },
+           
+                  getTxtFunction(e){
+                      this.txt=e.target.innerHTML
+                      let z=this.txt.slice(0,1)
+                      this.num=z-1
+                  },
+                  onSearch(val) {
+                      Toast(val);
+                  },
+           
+                  change(){
+                      setTimeout(()=>{
+                          if(this.txt==''){
+                          this.show=false
+                      } 
+                      if(this.txt==''){
+                          this.show=false
+                      }
+                      },1000)
+                  },
+           
+                  getTxt(k,index){
+                      console.log(k,index);
+                      var reg = /[\u4e00-\u9fa5]/g;
+                      var names = k.match(reg);
+                      let str = names.join("");
+                      this.txt=str
+                  }
+              },
+              watch:{
+           
+              },
+              computed:{
+                  filterFruitList() {
+                       if (this.txt=='') {
+                          this.show=false
+                   }
+                   let result=[]
+                   /*
+                       this.json.forEach((item) => {
+                      if( item.name.indexOf(this.txt) !== -1){
+                          result.push(item)
+                      }
+                   })
+                    */
+                   let dataList=[]
+                   result.forEach((k)=>{
+                      const reg=new RegExp(this.txt,'ig')
+                      let title=k.name.replace(reg,(val)=>`<span style='color:red'>${val}</span>`)
+                      dataList.push(title)
+                   })
+                  
+                   return dataList
+                  }
+              }
       }).mount('#app')
     </script>
+	<style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            
+         
+        }   
+            .box{
+                background:#efefef;
+                width: 100%;
+                height: calc(100% );
+                box-sizing: border-box;
+                position: absolute;
+                overflow: auto;
+                padding: 5px 0;
+            }
+         
+            .chat{
+                margin-bottom: 75px;
+                height: 90vh;
+                overflow-y: auto;
+            }
+         
+            li{
+                list-style: none;
+            }
+            img{
+                width: 45px;
+                height: 45px;
+                border-radius: 50%;
+            }
+            .left{
+                width: 100%;
+                padding: 0 10px;
+                text-align: left;
+                display: flex;
+                align-items: center;
+                margin-top: 5px;
+            }
+         
+           .right{
+                width: 100%;
+                padding: 0 10px;
+                text-align: right;
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+                margin-top: 5px;
+            }
+         
+            .message{
+               max-width: 70%;
+               
+                margin-left: 10px;
+                p{
+                     background: #fff;
+                      padding: 10px;
+                      border-radius: 4px;
+                      
+                }
+            }
+         
+            .message-right{
+                margin-right: 10px;
+                p{
+                    background: #95ec69;
+                      padding: 10px;
+                      border-radius: 4px;
+                }
+            }
+         
+            .txt{
+                width: 90%;
+                position: fixed;
+                bottom: 30px;
+                left: 50%;
+                transform: translateX(-50%);
+         
+                button{
+                    margin-left: 10px;
+                    height: 35px;
+                    float: right;  
+                    border: 0;
+                    background: #1989fa;
+                }
+                input{
+                    width: 75%;
+                    height: 35px;
+                    border: 0;
+                    border-radius: 5px;
+                    padding: 0 10px;
+                }
+           
+            }
+            
+            .suggest{
+                width: 60%;
+                padding: 10px 5px;
+                background: #fff;
+                border-radius: 10px;
+                margin-left: 10px;
+                margin-bottom: 10px;
+                li{
+                    margin: 5px 0;
+                }
+            }
+         
+            .hint{
+                font-size: 12px;
+                color: #1989fa;
+                margin-top: 4px;
+            }
+	</style>
 </body>
 
 </html>

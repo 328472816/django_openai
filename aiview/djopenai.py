@@ -2,7 +2,7 @@ import os
 import openai
 from . import models
 
-openai.organization = "org-O3U26PWUiKz0AQMNNmgnVOm0"
+#openai.organization = ""
 
 #openai.Model.list()
 

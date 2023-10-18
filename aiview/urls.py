@@ -11,4 +11,5 @@ urlpatterns = [
     path('changeapikey', views.changeapikey,name='changeapikey'),
     path('chat', views.chat,name='chat'),
     path('aitest', views.ai_test,name='ai_test'),
+    path('test', views.test,name='test'),
 ]
