@@ -22,3 +22,12 @@ python manage.py createsuperuser
 python manage.py runserver 0.0.0.0:8000
 
 # 生产
+
+```markup
+ #启动
+uwsgi --ini uwsgi.ini
+#停止
+uwsgi --stop uwsgi.pid
+# 查看日志
+tail -f uwsgi.log
+```

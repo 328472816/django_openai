@@ -1,0 +1,77 @@
+{% load static from staticfiles %}
+<!DOCTYPE html>
+<html lang="en" class="body-full-height">
+<head>
+    <!-- META SECTION -->
+    <title>振辉物联网--登录</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <!-- END META SECTION -->
+    <!-- CSS INCLUDE -->
+    <link rel="stylesheet" type="text/css" id="theme" href="{% static 'css/theme-default.css' %}" />
+    <!-- EOF CSS INCLUDE -->
+</head>
+<body>
+
+    <div class="login-container lightmode">
+
+        <div class="login-box animated fadeInDown">
+            <div class="login-logo"></div>
+            <div class="login-body">
+                {% if message %}
+                <div class="alert alert-warning">{{ message }}</div>
+                {% endif %}
+                <div class="login-title"><strong>登录</strong></div>
+                <form action="/login" class="form-horizontal" method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            {{ login_form.email.label_tag }}
+                            {{ login_form.email}}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            {{ login_form.password.label_tag }}
+                            {{ login_form.password}}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            {{ login_form.captcha.errors }}
+                            {{ login_form.captcha.label_tag }}
+                            {{ login_form.captcha }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <a href="{% url 'iot:forgetpassword'%}" class="btn btn-link btn-block">忘记密码？</a>
+                        </div>
+                        <div class="col-md-6">
+                            <button class="btn btn-info btn-block">登录</button>
+                        </div>
+                    </div>
+                    <div class="login-subtitle">
+                        还没有账号？ <a href="{% url 'iot:register'%}">新建用户</a>
+                    </div>
+                </form>
+            </div>
+            <div class="login-footer">
+                <div class="pull-left">
+                    &copy; 2020 振辉智能
+                </div>
+                <div class="pull-right">
+                    <a href="#">介绍</a> |
+                    <a href="#">联系我们</a>
+                </div>
+            </div>
+		<h3><a href="http://www.beian.miit.gov.cn">粤ICP备20048171号</a></h3>
+        </div>
+
+    </div>
+
+</body>
+</html>
