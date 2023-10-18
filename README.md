@@ -21,7 +21,7 @@ python manage.py createsuperuser
 
 python manage.py runserver 0.0.0.0:8000
 
-# 生产
+# 托管
 
 ```markup
  #启动

@@ -67,10 +67,35 @@
                   }
               },
               mounted(){
-                  
+                  //this.test();
               },
               methods:{
+                  test(){
+                      let mtest = {
+                            "id": "chatcmpl-8B3A1ODbrkyWAqWE9PNAvNOIJ8L3A",
+                            "object": "chat.completion",
+                            "created": 1697644449,
+                            "model": "gpt-3.5-turbo-0613",
+                            "choices": [
+                                {
+                                    "index": 0,
+                                    "message": {
+                                        "role": "assistant",
+                                        "content": "嗨！有什么我可以帮助你的吗？"
+                                    },
+                                    "finish_reason": "stop"
+                                }
+                            ],
+                            "usage": {
+                                "prompt_tokens": 10,
+                                "completion_tokens": 19,
+                                "total_tokens": 29
+                            }
+                        }
+                        console.log(this.mtest.choices[0].message.content)
+                  },
                   aks(){
+
                       let that = this;
                         $.ajax({
                                     type: "POST",
@@ -106,7 +131,8 @@
                       //this.reply()
                   },
            
-                  reply(str){
+                  reply(res){
+                    let str = res.choices[0].message.content
                       // let str='3434234'
                       let chat=document.querySelector('.chat')
                       let left=document.createElement('div')
