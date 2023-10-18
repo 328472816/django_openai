@@ -1,4 +1,4 @@
-### 虚拟环境
+# 环境
 
 python3 -m venv env
 source env/bin/activate
@@ -8,15 +8,17 @@ pip install -r requirement.txt
 
 //pip freeze > requirements.txt
 
-### 部署
+# 部署
+
+## 数据库
+
 python manage.py migrate
 python manage.py createsuperuser
 
 
 
+# 测试
 
-
-### 测试
 python manage.py runserver 0.0.0.0:8000
 
-### 生产
+# 生产
