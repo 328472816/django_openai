@@ -6,8 +6,10 @@ openai.organization = "org-O3U26PWUiKz0AQMNNmgnVOm0"
 
 openai.Model.list()
 
+testkey =""
+
 def Translation(userdata):
-    openai.api_key = os.getenv("OPENAI_API_KEY")
+    #openai.api_key = os.getenv("OPENAI_API_KEY")
     response = openai.ChatCompletion.create(
     model="gpt-3.5-turbo",
         messages=[
@@ -25,7 +27,7 @@ def Translation(userdata):
 
 
 def ChatBase(role,userdata):
-    openai.api_key = os.getenv("OPENAI_API_KEY")
+    #openai.api_key = os.getenv("OPENAI_API_KEY")
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
@@ -40,7 +42,7 @@ def ChatBase(role,userdata):
     return response
 
 def Test():
-    openai.api_key = os.getenv("OPENAI_API_KEY")
+    #openai.api_key = os.getenv("OPENAI_API_KEY")
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
@@ -57,6 +59,7 @@ def Test():
 if __name__ == '__main__':
     #这两个参数分别是账号和密码
     #user = meanweichatlogin('7894656','13802653734','zdn');
+    openai.api_key = os.getenv(testkey)
     code = Translation('who am i i need mony')
     print(code)
     code = Test()
